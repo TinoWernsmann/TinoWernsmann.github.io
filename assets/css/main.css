@@ -40,16 +40,15 @@ section.spotlights {
 }
 
 section.spotlights > section {
-	border-radius: 8px;
 	overflow: hidden;
+}
+
+section.spotlights .image {
+	border-radius: 8px !important;
 }
 
 #intro {
     border-radius: 0 0 0 15px !important; /* 0 for top corners, 15px for bottom corners */
-}
-
-section.wrapper.fade-up {
-	border-radius: 15px !important;
 }
 
 ol, ul {
