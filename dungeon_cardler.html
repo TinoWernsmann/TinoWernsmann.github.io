@@ -25,11 +25,52 @@
 				<!-- Main -->
 					<section id="main" class="wrapper">
 						<div class="inner">
+							<ul class="actions">
+								<li><a href="https://github.com/TinoWernsmann/RPG_DECK_ROGUE" class="button">GitHub Page</a></li>
+							</ul>
 							<h1 class="major">Dungeon Cardler</h1>
 							<span class="image fit"><img src="images/pic04.jpg" alt="" /></span>
-							<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique.</p>
-							<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
-						</div>
+							<h2>OVERVIEW & PREMISE</h2>
+							<p>DUNGEON CARDLER is a 2D deckbuilding rogue-like RPG that fuses turn-based weapon tactical combat with dynamic card synergies. Players face escalating waves of fantasy foes—ranging from swift Bandits and armored Knights to elemental Mages and Bosses like the Slime King.</p>
+							<p>Unlike traditional deckbuilders where cards act independently, RPG Deck Rogue introduces a novel Item-Card Synergy system: cards dynamically check the player's currently equipped weapon, attack type, and inventory state to execute context-dependent primary or secondary effects. Equipping new weapons permanently unlocks powerful new skill cards across runs, creating a rewarding loop of tactical experimentation and meta-progression.</p>
+							<h2>TECHNICAL HIGHLIGHTS & ARCHITECTURE</h2>
+							<ul>
+								<li>
+									<p>Modular Architecture & Event-Driven Bus:</br>Strict separation of concerns between game logic managers (GameManager, RoundManager, PlayerManager), visual presenters (UIManager, EnemyBoard, ShopAnimator), and data configurations (ScriptableObjects).</br>Decoupled communication utilizing C# events across player input, stat changes, turn end transitions, and board clear states.</p>
+								</li>
+								<li>
+									<p>Persistenm Data System (JSON Serialization):</br>Custom DataPersistenceManager implementing an IDataPersistence interface for decoupled save/load operations.</br>Cross-session storage via FileDataHandler with JSON serialization and optional encryption support for unlocking card pools.</p>
+								</li>
+								<li>
+									<p>Animation & Visual Polish:</br>Smooth UI motion and enemy positioning utilizing DOTween for responsive game feel.</br>Integrated audio management (AudioManager) handling background music, combat feedback, UI audio, and game state transitions.</p>
+								</li>
+							</ul>
+							<h2>PROJECT METRICS & TECH STACK</h2>
+							<ul>
+								<li>
+									<p>Engine: Unity</p>
+								</li>
+								<li>
+									<p>Aesthetics: Retro Pixel Style</p>
+								</li>
+								<li>
+									<p>Libraries used: DOTween by Demigiant</p>
+								</li>
+								<li>
+									<p>Platform: Web / PC (Itch.io Release)</p>
+								</li>
+								<li>
+									<p>Development Cycle: ~5 1/2 Months until MVP</p>
+								</li>
+								<li>
+									<p>Role: Solo Developer</p>
+								</li>
+							</ul>
+							<ul class="actions">
+								<li><a href="https://github.com/TinoWernsmann/RPG_DECK_ROGUE" class="button">GitHub Page</a></li>
+								<li><a href="https://gurd62.itch.io/dungeon-cardler" class="button">Game Page</a></li>
+							</ul>
+					</div>
 					</section>
 			</div>
 
