@@ -27,8 +27,90 @@
 						<div class="inner">
 							<h1 class="major">HSD-Party</h1>
 							<span class="image fit"><img src="images/pic04.jpg" alt="" /></span>
-							<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique.</p>
-							<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
+							<h2>OVERVIEW & PREMISE</h2>
+							<p>As part of the multiplayer party game "HSD-Party", I developed the complete 3D board game system. The gameplay principle is inspired by classic digital board games (such as Mario Party) and serves as the main playing stage for players to travel along and collect stars (or in this case Bachelor degrees).</p>
+							<p>As the developer of the board system, my focus was on the concept, architecture, and implementation of all core board logic mechanics:</p>
+							<ul style="padding-left: 5%;">
+								<li>
+									<p>Path & Graph Navigation: Networked movement across 3D tiles, including branching selectable paths (Split Tiles)</p>
+								</li>
+								<li>
+									<p>Round & Turn Management: Sequential turn control for up to 4 players, camera focusing, and round transitions with minigame triggers.</p>
+								</li>
+								<li>
+									<p>Dynamic Star System: Randomized placement of the primary goal (degree/stars) on the board with automatic path recalculation and camera presentation.</p>
+								</li>
+								<li>
+									<p>Item & Inventory System: Utilization of specialized dice, teleporters, stealing mechanics, and duel items.</p>
+								</li>
+								<li>
+									<p>Polymorphic Tile Architecture: Various interactive tile types such as quiz tiles (featuring campus questions), item shops, teleport points, event tiles, and negative/penalty tiles.</p>
+								</li>
+							</ul>
+							<p>The primary goal for players is to collect the most stars (degrees) and coins over a fixed number of rounds through strategic movement and clever item usage.</p>
+							<h2>TECHNICAL HIGHLIGHTS & ARCHITECTURE</h2>
+							<p>The system architecture was developed to be modular, type-safe, and event-driven in Godot 4.5. It is structured into the following core technical components:</p>
+							<h3>A) Path System & Board Topology (Graph & Linked List)</h3>
+							<ul>
+								<li><strong>Doubly Linked Network:</strong> Board tiles (<code>BiggameHSDCampus_Tile</code>) are automatically read from the scene at runtime and linked as a connected graph (<code>last_tile</code> / <code>next_tile</code>).</li>
+								<li><strong>Branching Paths (<code>SplitTile</code> & <code>PathManager</code>):</strong> When a player reaches a junction, the system pauses movement and activates an interactive direction selection. A visual 3D indicator (arrow sprite) previews the chosen route prior to confirmation.</li>
+							</ul>
+
+							<h3>B) State Machine & Player Movement</h3>
+							<ul>
+								<li><strong>State-Based Player (<code>BiggameHSDCampus_Player</code>):</strong> Controlled via a Finite State Machine (FSM) featuring the states <code>IDLE</code>, <code>MOVING</code>, <code>CHOOSING_ITEM</code>, <code>USING_ITEM</code>, <code>ON_SPLIT_TILE</code>, <code>FREE_CAM</code>, and <code>IN_MINIGAME</code>.</li>
+								<li><strong>Smooth Movement:</strong> Step-by-step movement along waypoints using Godot Tweens, combined with walking animations, sound effects when stepping on tiles, and remaining step management (<code>rest_move</code>).</li>
+							</ul>
+
+							<h3>C) Dynamic Star System (<code>StarManager</code>)</h3>
+							<ul>
+								<li><strong>Rule-Based Generation:</strong> At round start or following a star purchase, the <code>StarManager</code> randomly selects an eligible board tile. Junctions, teleport spots, and the previous star spot are automatically filtered out.</li>
+								<li><strong>Runtime Instantiation:</strong> 3D star models (<code>BookR.glb</code>) are dynamically instantiated with continuous rotation animations.</li>
+								<li><strong>Cutscene Integration:</strong> An automated camera track presents the new star location on the board to all players.</li>
+							</ul>
+
+							<h3>D) Polymorphic Tile Hierarchy (<code>BiggameHSDCampus_Tile</code>)</h3>
+							<p>All tiles inherit from a shared base class and extend gameplay polymorphically:</p>
+							<ul>
+								<li><strong><code>QuizTile</code>:</strong> Displays a quiz UI, pauses board view, plays camera intro animations, and rewards/penalizes correct or incorrect answers with coins.</li>
+								<li><strong><code>ShopTile</code> & <code>SpecialShopTile</code>:</strong> Opens an interactive shop featuring a 3D vendor model, dynamically populated item inventory from a pool, and coin deduction.</li>
+								<li><strong><code>TeleportTile</code>:</strong> Executes a 3D elevator lift/lower animation and seamlessly transfers the player to the target teleporter, including camera angle adjustment.</li>
+								<li><strong><code>EventTile</code> & <code>NegativeTile</code>:</strong> Trigger dynamic events (coins +/- , steps forward/backward) with randomized values.</li>
+							</ul>
+
+							<h3>E) Item & Inventory System</h3>
+							<p>(<code>InventoryManager</code>, <code>ItemFactory</code>, <code>Resource</code>-Items)</p>
+							<ul>
+								<li><strong>Data-Driven Items:</strong> Items are defined as Godot <code>Resource</code> instances (<code>BiggameHSDCampus_Item</code>), enabling easy extension within the editor.</li>
+								<li><strong>Item Types:</strong>
+									<ul>
+										<li><em>Dice Modifiers:</em> <code>BIG_DICE</code> (dice roll 8-10), <code>SMALL_DICE</code> (dice roll 1-4).</li>
+										<li><em>Interactive Magic / Abilities:</em> <code>STEAL_COINS</code> (steals coins from a selected target player), <code>STEAL_ITEM</code> (steals a random item from a target's inventory), <code>TELEPORT_TO_OTHER</code> (teleports to a target player's tile), <code>TELEPORT_TO_STAR</code> (direct teleport to the active star), <code>DUELL_ITEM</code> (triggers direct duels).</li>
+									</ul>
+								</li>
+								<li><strong>Player Selection Process:</strong> Asynchronous target selection process for targeted items using player input signals.</li>
+							</ul>
+
+							<h3>F) Turn Manager & Camera System</h3>
+							<ul>
+								<li><strong>Turn Control (<code>TurnManager</code>):</strong> Transfers control to the next player after a turn ends, smoothly fades UI elements and color codes (Fade In/Out), and checks match-ending conditions or transitions to the minigame phase at the end of a round.</li>
+								<li><strong>Dynamic Camera (<code>BiggameHSDCampus_CameraLogic</code>):</strong> Supports automatic perspective switches depending on path sections, camera tracking during interactions, and a manual free-cam inspection mode for players.</li>
+							</ul>
+							<h2>3. Project Metrics & Tech Stack</h2>
+							<ul class="metrics-list">
+								<li><strong>Engine:</strong> Godot Engine 4.5 (Forward Plus Rendering Pipeline)</li>
+								<li><strong>Programming Language:</strong> GDScript (Strict static typing with enabled compiler warnings for maximum code quality)</li>
+								<li><strong>Architecture Patterns:</strong> 
+									<ul>
+										<li>Finite State Machine (FSM)</li>
+										<li>Observer Pattern (Godot Signals)</li>
+										<li>Factory Pattern (<code>ItemFactory</code>)</li>
+										<li>Graph / Doubly-Linked List Topology</li>
+										<li>Resource-driven Architecture</li>
+									</ul>
+								</li>
+								<li><strong>Testing Framework:</strong> Integration of the GUT (Godot Unit Testing) plugin.</li>
+							</ul>
 						</div>
 					</section>
 			</div>
