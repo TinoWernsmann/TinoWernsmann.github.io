@@ -48,7 +48,7 @@ section.spotlights .image {
 }
 
 #intro {
-    border-radius: 0 0 0 15px !important; /* 0 for top corners, 15px for bottom corners */
+    border-radius: 0 0 0 0px !important; /* 0 for top corners, 15px for bottom corners */
 }
 
 ol, ul {
