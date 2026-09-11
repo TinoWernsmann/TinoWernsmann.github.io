@@ -50,12 +50,11 @@
 									<p>Polymorphic Tile Architecture: Various interactive tile types such as quiz tiles (featuring campus questions), item shops, teleport points, event tiles, and negative/penalty tiles.</p>
 								</li>
 							</ul>
-							<p>The primary goal for players is to collect the most stars (degrees) and coins over a fixed number of rounds through strategic movement and clever item usage.</p>
 							<h2>TECHNICAL HIGHLIGHTS & ARCHITECTURE</h2>
 							<p>The system architecture was developed to be modular, type-safe, and event-driven in Godot 4.5. It is structured into the following core technical components:</p>
 							<h3>A) Path System & Board Topology (Graph & Linked List)</h3>
 							<ul>
-								<li><strong>Doubly Linked Network:</strong> Board tiles (<code>BiggameHSDCampus_Tile</code>) are automatically read from the scene at runtime and linked as a connected graph (<code>last_tile</code> / <code>next_tile</code>).</li>
+								<li><strong>Double Linked List:</strong> Board tiles (<code>BiggameHSDCampus_Tile</code>) are automatically read from the scene at runtime and linked as a connected graph (<code>last_tile</code> / <code>next_tile</code>).</li>
 								<li><strong>Branching Paths (<code>SplitTile</code> & <code>PathManager</code>):</strong> When a player reaches a junction, the system pauses movement and activates an interactive direction selection. A visual 3D indicator (arrow sprite) previews the chosen route prior to confirmation.</li>
 							</ul>
 
@@ -68,7 +67,6 @@
 							<h3>C) Dynamic Star System (<code>StarManager</code>)</h3>
 							<ul>
 								<li><strong>Rule-Based Generation:</strong> At round start or following a star purchase, the <code>StarManager</code> randomly selects an eligible board tile. Junctions, teleport spots, and the previous star spot are automatically filtered out.</li>
-								<li><strong>Runtime Instantiation:</strong> 3D star models (<code>BookR.glb</code>) are dynamically instantiated with continuous rotation animations.</li>
 								<li><strong>Cutscene Integration:</strong> An automated camera track presents the new star location on the board to all players.</li>
 							</ul>
 
